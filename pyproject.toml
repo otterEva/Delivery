@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "delivery"
+version = "0.1.0"
+description = ""
+authors = ["Artemiy <renevartemiy@yandex.ru>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+fastapi = "^0.115.6"
+dynaconf = "^3.2.6"
+asyncpg = "^0.30.0"
+ruff = "^0.8.3"
+poetry = "^1.8.5"
+alembic = "^1.14.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
