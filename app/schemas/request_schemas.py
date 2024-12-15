@@ -1,24 +1,23 @@
 from pydantic import BaseModel
-from typing import List
-
-class OrderedItemSchema(BaseModel):
+from typing import Tuple, Dict, List, Optional
     
-    guid: str
-    quantity: int
+class Courier(BaseModel):
+    courier_id: int
+    max_capacity: Optional[int] = None
+    max_mass: Optional[int] = None
+    courier_address: Tuple[float, float]
 
-class DeliveryPointSchema(BaseModel):
-    
-    coordinates: List[float]  # [lat, lon]
-    items: List[OrderedItemSchema]
+class Warehouse(BaseModel):
+    warehouse_address: Tuple[float, float]
 
-class WarehouseSchema(BaseModel):
-    
-    coordinates: List[float] 
-    items: List[str] 
+class SubOrder(BaseModel):
+    warehouse_address: Tuple[float, float]
+    items: Dict[int, int] 
+
+class Order(BaseModel):
+    delivery_address: Tuple[float, float]
+    suborders: List[SubOrder]
 
 class DeliveryRequestSchema(BaseModel):
-
-    courier_start_point: List[float]
-    delivery_points: List[DeliveryPointSchema]
-    warehouses: List[WarehouseSchema]
-    courier_capacity: int
+    couriers: List[Courier]
+    orders: List[Order]

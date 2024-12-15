@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from routers.route_router import router as route_router
+from app.api.route_router import router as route_router
 
 app = FastAPI(title="Logistics Platform")
 

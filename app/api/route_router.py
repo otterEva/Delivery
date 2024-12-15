@@ -1,20 +1,13 @@
 from fastapi import APIRouter
-from schemas.request_schemas import DeliveryRequestSchema
-from schemas.response_schemas import RouteResponseSchema
-from services.route_calculator import RouteCalculator
-from services.maps_api import MapsAPI
-
+from app.schemas.request_schemas import DeliveryRequestSchema
+from app.services.maps_api import get_distances_and_durations, get_permutations
 router = APIRouter()
 
-@router.post("/calculate_route", response_model=RouteResponseSchema)
-def calculate_route(request: DeliveryRequestSchema):
+@router.post("/calculate_route")
+def calculate_route(data: DeliveryRequestSchema):
 
-    maps_api = MapsAPI()
+	got_coorinates_and_objects = get_distances_and_durations(data)
+	got_coordinates_only = [coordinate[0] for coordinate in got_coorinates_and_objects]
 
-    calculator = RouteCalculator(maps_api=maps_api)
-
-    route = calculator.calculate_route(request)
-
-    route_coords = [[stop.latitude, stop.longitude] for stop in route.stops]
-
-    return RouteResponseSchema(route=route_coords, map_url=route.map_url)
+	perms = get_permutations(got_coordinates_only)
+	return perms

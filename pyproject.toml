@@ -13,6 +13,7 @@ asyncpg = "^0.30.0"
 ruff = "^0.8.3"
 poetry = "^1.8.5"
 alembic = "^1.14.0"
+uvicorn = "^0.33.0"
 
 
 [build-system]
