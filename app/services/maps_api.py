@@ -13,3 +13,24 @@ def get_distances_and_durations(data: DeliveryRequestSchema):
 
 def get_permutations(points):
     return list(permutations(points, 2))
+def transform_data(data):
+
+    points = []
+    sources = []
+    targets = []
+    
+    for i, pair in enumerate(data):
+        for j, coord in enumerate(pair):
+          points.append({"lat": coord[0], "lon": coord[1]})
+          if j == 0:
+             sources.append(len(points) - 1)
+          elif j == 1:
+             targets.append(len(points) - 1)
+
+    result = {
+        "points": points,
+        "sources": sources,
+        "targets": targets,
+        "type": "jam"
+    }
+    return result
