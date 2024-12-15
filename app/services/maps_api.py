@@ -1,7 +1,7 @@
 from app.schemas.request_schemas import DeliveryRequestSchema
 from itertools import permutations
 
-def get_distances_and_durations(data: DeliveryRequestSchema):
+def get_coordinates(data: DeliveryRequestSchema):
     points = []
     for courier in data.couriers:
         points.append([courier.courier_address, courier])
@@ -33,4 +33,5 @@ def transform_data(data):
         "targets": targets,
         "type": "jam"
     }
+
     return result

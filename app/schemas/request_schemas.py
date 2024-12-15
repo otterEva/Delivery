@@ -7,9 +7,6 @@ class Courier(BaseModel):
     max_mass: Optional[int] = None
     courier_address: Tuple[float, float]
 
-class Warehouse(BaseModel):
-    warehouse_address: Tuple[float, float]
-
 class SubOrder(BaseModel):
     warehouse_address: Tuple[float, float]
     items: Dict[int, int] 

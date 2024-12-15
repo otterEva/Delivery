@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 from app.schemas.request_schemas import DeliveryRequestSchema
-from app.services.maps_api import get_distances_and_durations, get_permutations, transform_data
+from app.services.maps_api import get_coordinates, get_permutations, transform_data
 import httpx
 import time
 import json
@@ -13,7 +13,7 @@ def calculate_route(data: DeliveryRequestSchema):
 	headers = {"Content-Type": "application/json"}
 	api_key = "d7d625b0-6754-4633-8ad0-107de6cecc40"
 
-	got_coorinates_and_objects = get_distances_and_durations(data)
+	got_coorinates_and_objects = get_coordinates(data)
 	got_coordinates_only = [coordinate[0] for coordinate in got_coorinates_and_objects]
 
 	perms = get_permutations(got_coordinates_only)
@@ -37,8 +37,3 @@ def calculate_route(data: DeliveryRequestSchema):
 			file_content = response.content
 			decoded_content = file_content.decode('utf-8')
 			return json.loads(decoded_content)
-
-
-
-
-	

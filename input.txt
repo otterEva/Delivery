@@ -30,8 +30,6 @@
 }
 
 
-
-
 {
     "couriers": [
         {"courier_id": 1, "courier_address": [54.9967058758, 82.7920502]}
@@ -41,12 +39,6 @@
             "delivery_address": [54.9125058, 82.79502868],
             "suborders": [
                 {"warehouse_address": [54.999705, 82.781028], "items": {"68": 7, "5": 1, "28": 2, "16": 1}}
-                         ]
-        },
-        {
-            "delivery_address": [54.9017058, 82.8250286],
-            "suborders": [
-                {"warehouse_address": [55.10077058, 82.8250286], "items": {"23": 1, "16": 5}}
                          ]
         }
               ]
