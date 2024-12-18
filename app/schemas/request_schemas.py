@@ -1,18 +1,19 @@
 from pydantic import BaseModel
-from typing import Tuple, Dict, List, Optional
-    
+from typing import Tuple, Dict, List
+
 class Courier(BaseModel):
     courier_id: int
-    max_capacity: Optional[int] = None
-    max_mass: Optional[int] = None
-    courier_address: Tuple[float, float]
+    address: Tuple[float, float]
 
 class SubOrder(BaseModel):
-    warehouse_address: Tuple[float, float]
-    items: Dict[int, int] 
+    address: Tuple[float, float]
+    items: Dict[int, int]
+
+class OrderData(BaseModel):
+    address: Tuple[float, float]
 
 class Order(BaseModel):
-    delivery_address: Tuple[float, float]
+    order: OrderData
     suborders: List[SubOrder]
 
 class DeliveryRequestSchema(BaseModel):
