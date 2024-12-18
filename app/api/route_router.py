@@ -1,37 +1,26 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, HTTPException, status
 from app.schemas.request_schemas import DeliveryRequestSchema
 from app.services.gis_request import RequestService
-import httpx
-import time
-import json
-
+from app.services.gis_responce import ResponceService
+from app.exceptions import GisException, JsonDecodeException, BaseAppException, CreateGisRequestException, CheckStatusException
 router = APIRouter()
 
 @router.post("/calculate_route")
-def calculate_route(delivery_request: DeliveryRequestSchema):
+async def calculate_route(delivery_request: DeliveryRequestSchema):
 
-	headers = {"Content-Type": "application/json"}
-	api_key = "d7d625b0-6754-4633-8ad0-107de6cecc40"
-
-	ready_request = RequestService.prepare_request(delivery_request)
-	return ready_request
-
-	
-	# task_id = httpx.post(url = f"https://routing.api.2gis.com/async_matrix/create_task/get_dist_matrix?key={api_key}&version=2.0",
-	# 									headers = headers, json=data).json()
-	
-	# while True:
-	# 	task_status = httpx.get(url = f'https://routing.api.2gis.com/async_matrix/result/get_dist_matrix/{task_id["task_id"]}?key={api_key}',
-	# 										headers = headers).json()
-	
-
-	# 	if task_status["status"] == 'TASK_CANCELED':
-	# 		return "задача отменена"
-	# 	if task_status["status"] == 'TASK_IN_QUEUE' or 'TASK_IN_PROGRESS' or 'TASK_CREATED':
-	# 		print(task_status)
-	# 		time.sleep(10)
-	# 	if task_status['status'] == 'TASK_DONE':
-	# 		response = httpx.get(task_status["result_link"])
-	# 		file_content = response.content
-	# 		decoded_content = file_content.decode('utf-8')
-	# 		return json.loads(decoded_content)
+	try:
+		ready_request = RequestService.prepare_request(delivery_request)
+		ready_responce = await ResponceService.get_2gis_responce(ready_request)
+	except GisException:
+		raise HTTPException(status_code = status.HTTP_406_NOT_ACCEPTABLE, detail = '2gis умер')
+	except JsonDecodeException:
+		raise HTTPException(status_code = status.HTTP_500_INTERNAL_SERVER_ERROR)
+	except BaseAppException as e:
+		raise HTTPException(status_code = status.HTTP_500_INTERNAL_SERVER_ERROR, detail = str(e))
+	except Exception:
+		raise HTTPException(status_code = status.HTTP_500_INTERNAL_SERVER_ERROR)
+	except CreateGisRequestException:
+		raise HTTPException(status_code = status.HTTP_500_INTERNAL_SERVER_ERROR)
+	except CheckStatusException:
+		raise HTTPException(status_code = status.HTTP_500_INTERNAL_SERVER_ERROR)
+	return ready_responce

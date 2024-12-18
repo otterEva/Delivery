@@ -15,6 +15,7 @@ poetry = "^1.8.5"
 alembic = "^1.14.0"
 uvicorn = "^0.33.0"
 httpx = "^0.28.1"
+asyncio = "^3.4.3"
 
 
 [build-system]
