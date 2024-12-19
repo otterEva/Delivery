@@ -16,7 +16,7 @@ class PrepareApiRequestService:
 
 
             for order in delivery_request.orders:
-                data[index] = {"object_type": 2, "object": order}
+                data[index] = {"object_type": 2, "object": order.order}
                 relative_index = index
                 index += 1
 
@@ -28,7 +28,7 @@ class PrepareApiRequestService:
                     }
                     index += 1
 
-            return self._get_permutations(data)
+            return self._get_permutations(data), data
             
     def _get_permutations(self, data):
         
