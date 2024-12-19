@@ -12,7 +12,13 @@ class GetGisResponce:
 	async def gather_2gis_list_responce(self, request_list):
 		async with httpx.AsyncClient() as client:
 			responce_list = await asyncio.gather(*[self._get_2gis_responce(client, request) for request in request_list])
-		return responce_list
+
+		combined_routes = []
+
+		for entry in responce_list:
+			combined_routes.extend(entry["routes"])
+
+		return {"routes": combined_routes}
 	
 	async def _get_2gis_responce(self, client, request):
 		responce = await client.post(url=f"{self.url_to_send_request}{self.api_key}&version=2.0",

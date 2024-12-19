@@ -64,7 +64,6 @@ class PrepareApiRequestService:
 
     def _prepare_request(self, from_list, to_list):
 
-
         points = []
         
         pairs = list(zip(from_list, to_list))
