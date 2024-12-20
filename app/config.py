@@ -8,7 +8,7 @@ class APPConfig(BaseModel):
     app_name: str
     app_host: str
     app_mount: str
-
+    api_key: str
 
 class Settings(BaseModel):
     app: APPConfig

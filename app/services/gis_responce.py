@@ -1,11 +1,12 @@
 import httpx
 import json
 import asyncio
+from app.config import settings
 
 class GetGisResponce:
 	
 	headers = {"Content-Type": "application/json"}
-	api_key = "7e0ff9df-fdc6-4e13-9fd0-56c1af683509"
+	api_key = settings.app.api_key
 	url_to_send_request = 'https://routing.api.2gis.com/async_matrix/create_task/get_dist_matrix?key='
 	url_to_check_request_status = 'https://routing.api.2gis.com/async_matrix/result/get_dist_matrix/'
 
