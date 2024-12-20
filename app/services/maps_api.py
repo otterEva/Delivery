@@ -1,6 +1,7 @@
 from app.schemas.request_schemas import DeliveryRequestSchema
 from itertools import permutations
 
+
 def get_distances_and_durations(data: DeliveryRequestSchema):
     points = []
     for courier in data.couriers:
@@ -11,26 +12,23 @@ def get_distances_and_durations(data: DeliveryRequestSchema):
             points.append([suborder.warehouse_address, suborder])
     return points
 
+
 def get_permutations(points):
     return list(permutations(points, 2))
-def transform_data(data):
 
+
+def transform_data(data):
     points = []
     sources = []
     targets = []
-    
+
     for i, pair in enumerate(data):
         for j, coord in enumerate(pair):
-          points.append({"lat": coord[0], "lon": coord[1]})
-          if j == 0:
-             sources.append(len(points) - 1)
-          elif j == 1:
-             targets.append(len(points) - 1)
+            points.append({"lat": coord[0], "lon": coord[1]})
+            if j == 0:
+                sources.append(len(points) - 1)
+            elif j == 1:
+                targets.append(len(points) - 1)
 
-    result = {
-        "points": points,
-        "sources": sources,
-        "targets": targets,
-        "type": "jam"
-    }
+    result = {"points": points, "sources": sources, "targets": targets, "type": "jam"}
     return result
