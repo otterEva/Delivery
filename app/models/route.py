@@ -1,9 +1,10 @@
 from typing import List
 from .coordinate import Coordinate
 
+
 class Route:
     def __init__(self, stops: List[Coordinate], map_url: str):
-        #Список координат (stops), представляющих маршрут
+        # пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ (stops), пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
         self.stops = stops
-        #URL карты маршрута (map_url)
+        # URL пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ (map_url)
         self.map_url = map_url
