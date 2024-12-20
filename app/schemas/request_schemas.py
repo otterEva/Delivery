@@ -4,22 +4,26 @@ from typing import Tuple, Dict, List, Optional
 
 class Courier(BaseModel):
     courier_id: int
-    max_capacity: Optional[int] = None
-    max_mass: Optional[int] = None
-    courier_address: Tuple[float, float]
+    address: Tuple[float, float]
+    duration: Optional[Dict[int,float]] = {}
+    distance: Optional[Dict[int,float]] = {}
 
-
-class Warehouse(BaseModel):
-    warehouse_address: Tuple[float, float]
 
 
 class SubOrder(BaseModel):
-    warehouse_address: Tuple[float, float]
+    address: Tuple[float, float]
     items: Dict[int, int]
+    duration: Optional[Dict[int,float]] = {}
+    distance: Optional[Dict[int,float]] = {}
+
+class OrderData(BaseModel):
+    address: Tuple[float, float]
+    duration: Optional[Dict[int,float]] = {}
+    distance: Optional[Dict[int,float]] = {}
 
 
 class Order(BaseModel):
-    delivery_address: Tuple[float, float]
+    order: OrderData
     suborders: List[SubOrder]
 
 
