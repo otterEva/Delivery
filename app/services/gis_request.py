@@ -57,6 +57,7 @@ class PrepareApiRequestService:
         to_sublist = [to_list[i:i + 10] for i in range(0, len(to_list), 10)]
 
         request_list = []
+
         for from_list, to_list in zip(from_sublist, to_sublist):
             request_list.append(self._prepare_request(from_list,  to_list))
 
@@ -69,20 +70,14 @@ class PrepareApiRequestService:
         pairs = list(zip(from_list, to_list))
 
         for from_, to_ in pairs:
-            if isinstance(from_[1], schema.Courier) or isinstance(from_[1], schema.SubOrder):
-                points.append({"lat": from_[1].address[0], "lon": from_[1].address[1]})
-            if isinstance(from_[1], schema.Order):
-                points.append({"lat": from_[1].order.address[0], "lon": from_[1].order.address[1]})
-
-            if isinstance(to_[1], schema.Courier) or isinstance(to_[1], schema.SubOrder):
-                points.append({"lat": to_[1].address[0], "lon": to_[1].address[1]})
-            if isinstance(to_, schema.Order):
-                points.append({"lat": to_[1].order.address[0], "lon": to_[1].order.address[1]})
+            
+            points.append({"lat": from_[1].address[0], "lon": from_[1].address[1]})
+            points.append({"lat": to_[1].address[0], "lon": to_[1].address[1]})
 
         ready_api_request = {
             "points": points,
-            "sources": [element[0] for element in from_list],
-            "targets": [element[0] for element in to_list],
+            "sources": [i for i in range(0,20,2)],
+            "targets": [i for i in range(1,20,2)],
             "type": "jam"
         }
 
