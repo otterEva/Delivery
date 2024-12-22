@@ -34,9 +34,7 @@ class GetGisResponce:
 		while True:
 			responce = await client.get(url=f'{self.url_to_check_request_status}{task_id["task_id"]}?key={self.api_key}',
 										 headers=self.headers)
-			print(responce)
 			task_status = responce.json()
-			print(task_status)
 
 			if task_status["status"] == 'TASK_CANCELED':
 				return "задача отменена"
