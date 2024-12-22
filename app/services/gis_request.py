@@ -14,7 +14,6 @@ class PrepareApiRequestService:
                 data[index] = {"object_type": 1, "object": courier}
                 index += 1
 
-
             for order in delivery_request.orders:
                 data[index] = {"object_type": 2, "object": order.order}
                 relative_index = index
@@ -42,6 +41,8 @@ class PrepareApiRequestService:
                     continue
                 if data[first_object]["object_type"] == 1 and data[second_object]["object_type"] == 1:
                     continue
+                if data[first_object]["object_type"] == 1 and data[second_object]["object_type"] == 2:
+                    continue
                 if data[first_object]["object_type"] == 2 and data[second_object]["object_type"] == 1:
                     continue
                 if data[first_object]["object_type"] == 3 and data[second_object]["object_type"] == 1:
@@ -53,10 +54,11 @@ class PrepareApiRequestService:
                 from_list.append((first_object, data[first_object]["object"]))
                 to_list.append((second_object, data[second_object]["object"]))
 
-        from_sublist = [from_list[i:i + 10] for i in range(0, len(from_list), 10)]
-        to_sublist = [to_list[i:i + 10] for i in range(0, len(to_list), 10)]
+    
+        from_sublist, to_sublist = self._get_to_and_from_sublists(to_list, from_list)
 
         request_list = []
+
         for from_list, to_list in zip(from_sublist, to_sublist):
             request_list.append(self._prepare_request(from_list,  to_list))
 
@@ -65,27 +67,72 @@ class PrepareApiRequestService:
     def _prepare_request(self, from_list, to_list):
 
         points = []
-        
-        pairs = list(zip(from_list, to_list))
+        first = from_list[0][0]
+        second = []
+        sources = []
+        targets = []
 
-        for from_, to_ in pairs:
-            if isinstance(from_[1], schema.Courier) or isinstance(from_[1], schema.SubOrder):
-                points.append({"lat": from_[1].address[0], "lon": from_[1].address[1]})
-            if isinstance(from_[1], schema.Order):
-                points.append({"lat": from_[1].order.address[0], "lon": from_[1].order.address[1]})
+        points.append({"lat": from_list[0][1].address[0], "lon": from_list[0][1].address[1]})
+        sources.append(1)
 
-            if isinstance(to_[1], schema.Courier) or isinstance(to_[1], schema.SubOrder):
-                points.append({"lat": to_[1].address[0], "lon": to_[1].address[1]})
-            if isinstance(to_, schema.Order):
-                points.append({"lat": to_[1].order.address[0], "lon": to_[1].order.address[1]})
+        i=2
 
+        for to_ in to_list:
+            
+            points.append({"lat": to_[1].address[0], "lon": to_[1].address[1]})
+            second.append(to_[0])
+            targets.append(i)
+            i += 1
+
+        i=2
         ready_api_request = {
             "points": points,
-            "sources": [element[0] for element in from_list],
-            "targets": [element[0] for element in to_list],
-            "type": "jam"
+
+            "sources": sources,
+            "targets": targets,
+
+            "type": "jam",
+
+            "real_sources" : first,
+            "real_targets" : second
         }
 
         return ready_api_request
+    
+    ########################################################################################################
+    
+    def _get_to_and_from_sublists(self, to_list, from_list):
+        from_sublist = self._get_from_sublist(from_list)
+        to_sublist = []
+        index = 0
+        for sublist in from_sublist:
+            count = len(sublist)
+            to_sublist.append(to_list[index:index + count])
+            index += count
+
+        return from_sublist, to_sublist
+    
+    def _get_from_sublist(self, from_list):
+
+        from_sublist = []
+        sublist = []
+        e = 0
+
+        for i in range(1, len(from_list)):
+            if from_list[i] == from_list[i - 1] and e < 9:
+                e += 1
+                sublist.append(from_list[i - 1])
+            else:
+                sublist.append(from_list[i - 1])
+                from_sublist.append(sublist)
+                sublist = []
+                e = 0
+
+        if sublist:
+            sublist.append(from_list[-1])
+            from_sublist.append(sublist)
+
+        return from_sublist
+
 
 RequestService = PrepareApiRequestService()

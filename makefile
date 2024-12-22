@@ -5,3 +5,7 @@ format:
 types:
 	@echo "checking types..."
 	poetry run mypy app
+
+run:
+	@echo "checking types..."
+	poetry run app.main:app --reload

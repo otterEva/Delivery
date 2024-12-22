@@ -6,7 +6,6 @@ from app.main import run_api_app
 
 cli = Typer(help="Delivery Service CLI")
 
-
 class Apps(str, Enum):
     api = "api"
 
