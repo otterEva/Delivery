@@ -19,6 +19,7 @@ mypy = "^1.14.0"
 typer = "^0.15.1"
 asyncio = "^3.4.3"
 ortools = "^9.11.4210"
+structlog = "^24.4.0"
 
 
 [build-system]
