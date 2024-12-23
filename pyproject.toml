@@ -18,6 +18,7 @@ httpx = "^0.28.1"
 mypy = "^1.14.0"
 typer = "^0.15.1"
 asyncio = "^3.4.3"
+ortools = "^9.11.4210"
 
 
 [build-system]

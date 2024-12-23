@@ -8,7 +8,7 @@ class PrepareApiRequestService:
     def _create_data_structure(self, delivery_request: schema.DeliveryRequestSchema):
 
             data = {}
-            index = 1
+            index = 0
 
             for courier in delivery_request.couriers:
                 data[index] = {"object_type": 1, "object": courier}
@@ -73,9 +73,9 @@ class PrepareApiRequestService:
         targets = []
 
         points.append({"lat": from_list[0][1].address[0], "lon": from_list[0][1].address[1]})
-        sources.append(1)
+        sources.append(0)
 
-        i=2
+        i=1
 
         for to_ in to_list:
             
@@ -84,14 +84,11 @@ class PrepareApiRequestService:
             targets.append(i)
             i += 1
 
-        i=2
         ready_api_request = {
             "points": points,
 
             "sources": sources,
             "targets": targets,
-
-            "type": "jam",
 
             "real_sources" : first,
             "real_targets" : second
