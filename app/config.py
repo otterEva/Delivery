@@ -10,6 +10,7 @@ class APPConfig(BaseModel):
     app_mount: str
     api_key: str
 
+
 class Settings(BaseModel):
     app: APPConfig
 
