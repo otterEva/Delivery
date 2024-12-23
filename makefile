@@ -7,5 +7,5 @@ types:
 	poetry run mypy app
 
 run:
-	@echo "checking types..."
-	poetry run app.main:app --reload
+	@echo "running app'ку..."
+	poetry run python cli.py api

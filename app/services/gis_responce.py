@@ -18,7 +18,7 @@ class GetGisResponce:
 		return {"routes": responce_list}
 	
 	async def _get_2gis_responce(self, client, request):
-		keys_to_slice = ["points", "sources",  "targets", "type"]
+		keys_to_slice = ["points", "sources",  "targets"]
 		request_data = {k: request[k] for k in keys_to_slice}
 
 		indexes_data = {"real_sources": request["real_sources"], "real_targets": request["real_targets"]}
@@ -28,7 +28,7 @@ class GetGisResponce:
 
 		task_id = responce.json()
 
-		if task_id is None:
+		if "task_id" not in task_id:
 			raise HTTPException(status_code = status.HTTP_400_BAD_REQUEST, detail = ('2gis says: ' + str(responce.json())))
 
 		while True:
